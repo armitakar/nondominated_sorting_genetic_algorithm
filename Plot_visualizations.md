@@ -1,24 +1,67 @@
----
-title: "Plot visualizations"
-output:
-  github_document
----
+Plot visualizations
+================
 
-Please note that all plots are generated using mock data and therefore do not resemble to our actual findings. 
+Please note that all plots are generated using mock data and therefore
+do not resemble to our actual findings.
 
-```{r}
+``` r
 library(dplyr)
+```
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
 library(ggplot2)
+```
+
+    ## Warning: package 'ggplot2' was built under R version 4.3.3
+
+``` r
 library(gridExtra)
+```
+
+    ## 
+    ## Attaching package: 'gridExtra'
+
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     combine
+
+``` r
 library(reshape2)
 library(tidycensus)
 library(tidyr)
+```
+
+    ## 
+    ## Attaching package: 'tidyr'
+
+    ## The following object is masked from 'package:reshape2':
+    ## 
+    ##     smiths
+
+``` r
 library(sf)
+```
+
+    ## Linking to GEOS 3.11.2, GDAL 3.7.2, PROJ 9.3.0; sf_use_s2() is TRUE
+
+``` r
 setwd("C:/Users/armit/GA/Data_and_code/")
 ```
 
-##### Distribution of total solution counts by non-dominated front ranks and their variations with increased population size ####
-```{r}
+##### Distribution of total solution counts by non-dominated front ranks and their variations with increased population size
+
+``` r
 dat = read.csv("Output/param_select/hilltop_nsga2_sorted_popsize.csv")
 dat = dat %>% filter(nondomination_rank <4)
 dat$nondomination_rank = as.factor(dat$nondomination_rank+1)
@@ -40,12 +83,23 @@ p1<-ggplot(popsize2, aes(x=nondomination_rank, y=Freq, fill=popsize)) +
         #panel.grid.major.x = element_line(colour = "grey"),
         panel.border = element_rect(colour = "black", fill=NA, size=0.5)) +
   facet_wrap(~area)
-p1
-
 ```
 
-##### Distribution of total solution counts by non-dominated front ranks and their variations with increased number of generations ####
-```{r}
+    ## Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
+    ## ℹ Please use the `linewidth` argument instead.
+    ## This warning is displayed once every 8 hours.
+    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    ## generated.
+
+``` r
+p1
+```
+
+![](Plot_visualizations_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+##### Distribution of total solution counts by non-dominated front ranks and their variations with increased number of generations
+
+``` r
 dat = read.csv("Output/param_select/hilltop_nsga2_sorted_numgen.csv")
 
 dat = dat %>% filter(nondomination_rank <4)
@@ -70,12 +124,13 @@ p2<-ggplot(numgen2, aes(x=nondomination_rank, y=Freq, fill=numgen)) +
         panel.border = element_rect(colour = "black", fill=NA, size=0.5)) +
   facet_wrap(~area)
 p2
-
 ```
 
+![](Plot_visualizations_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
-##### Distribution of total solution counts by non-dominated front ranks and their variations with increased mutation probability ####
-```{r}
+##### Distribution of total solution counts by non-dominated front ranks and their variations with increased mutation probability
+
+``` r
 dat = read.csv("Output/param_select/hilltop_nsga2_sorted_pmutation.csv")
 
 dat = dat %>% filter(nondomination_rank <4)
@@ -100,12 +155,13 @@ p3<-ggplot(pmutation2, aes(x=nondomination_rank, y=Freq, fill=pmutation)) +
         panel.border = element_rect(colour = "black", fill=NA, size=0.5)) +
   facet_wrap(~area)
 p3
-
 ```
 
+![](Plot_visualizations_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
-##### Distribution of total solution counts by non-dominated front ranks and their variations with increased crossover probability ####
-```{r}
+##### Distribution of total solution counts by non-dominated front ranks and their variations with increased crossover probability
+
+``` r
 dat = read.csv("Output/param_select/hilltop_nsga2_sorted_pcrossover.csv")
 
 dat = dat %>% filter(nondomination_rank <4)
@@ -132,10 +188,11 @@ p4<-ggplot(pcrossover2, aes(x=nondomination_rank, y=Freq, fill=pcrossover)) +
 p4
 ```
 
+![](Plot_visualizations_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
+#### Convergence of NSGA-II models over multiple generations
 
-#### Convergence of NSGA-II models over multiple generations #######
-```{r}
+``` r
 dat = read.csv("Output/hilltop_sol.csv")
 
 dat1 = dat %>% mutate(solution = row_number())
@@ -175,10 +232,11 @@ ggplot() +
         strip.text.x = element_text(size = 12)) 
 ```
 
+![](Plot_visualizations_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
+#### Naive and extreme optimal solutions and respective walking perception gains across groups
 
-#### Naive and extreme optimal solutions and respective walking perception gains across groups #####
-```{r}
+``` r
 naive = read.csv("Output/hilltop_naive_solution.csv")
 naive$sol_type = "Naive solutions"
 naive = naive %>% select(-c("sols", "X"))
@@ -244,3 +302,10 @@ ggplot(data=dat1, aes(x=variable, y=value, group = solution)) +
         strip.text.x = element_text(size = 12)) 
 ```
 
+    ## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+    ## ℹ Please use `linewidth` instead.
+    ## This warning is displayed once every 8 hours.
+    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    ## generated.
+
+![](Plot_visualizations_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->

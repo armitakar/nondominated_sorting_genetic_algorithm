@@ -2,7 +2,6 @@
 """
 Created on Mon Mar 13 19:39:41 2023
 
-@author: armit
 """
 import numpy as np
 from connectivity import *

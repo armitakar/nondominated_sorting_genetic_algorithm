@@ -2,12 +2,11 @@
 """
 Created on Mon Mar 13 19:03:53 2023
 
-@author: armit
 """
 from random import randint
 import numpy as np
 
-'''this function returns a index value of the gap roads that has atleast one connection with previously built road'''
+#this function returns a index value of the gap roads that has atleast one connection with previously built road
 def find_connection_with_old_road(road_dat, nn): 
     rd_id = list(road_dat['OBJECTID'].values)
     while True:

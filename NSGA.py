@@ -2,11 +2,10 @@
 """
 Created on Thu Apr  6 08:53:11 2023
 
-@author: armit
 """
 
 #Non-dominated sorting GA 
-#https://github.com/adam-katona/NSGA_2_tutorial/blob/master/NSGA_2_tutorial.ipynb
+#Source code: https://github.com/adam-katona/NSGA_2_tutorial/blob/master/NSGA_2_tutorial.ipynb
 
 
 
@@ -29,7 +28,7 @@ def dominates(fitnesses_1,fitnesses_2):
 
 # A set of solutions which do not dominate each other is called a Pareto front.
 # When there is no solution which dominates any of members of the front, it is called an optimal Pareto front.
-# The goeal of multiobjective optimization is to find the optimal Pareto front.
+# The goal of multiobjective optimization is to find the optimal Pareto front.
 
 def calculate_pareto_fronts(fitnesses):
     
@@ -71,6 +70,7 @@ def calculate_pareto_fronts(fitnesses):
 # NSGA-II uses a crowding metric to do this.
 # The crowding metric is based on how close the neerest neighbors in the same front are for each objective. 
 
+
 def calculate_crowding_metrics(fitnesses,fronts):
     
     num_objectives = fitnesses.shape[1]
@@ -103,6 +103,7 @@ def calculate_crowding_metrics(fitnesses,fronts):
 
 
 # For sorting the population we need both the nondomination rank and the crowding metric
+# In this algorithm, we further multiply the crowding distance with continuity ratio to estimate a crowd-continuous index and use that value for fitness evaluation
 # We always consider the nondomination rank first, but in a tie we use the crowding metric
 
 # helper function
@@ -130,7 +131,7 @@ def nondominated_sort(nondomination_rank_dict,crowding):
         elif nondomination_rank_dict[a] < nondomination_rank_dict[b]:
             return 1
         else:
-            if crowding[a] < crowding[b]:   # crowding metrics, larger better
+            if crowding[a] < crowding[b]:   # crowd-continuous metrics, larger better
                 return -1
             elif crowding[a] > crowding[b]:
                 return 1

@@ -64,7 +64,7 @@ df.to_pickle(r'Output\hilltop_final solutions_sorted.pkl')
 
 ########## find naive solutions  ##################
 #road dataset with no sidewalk
-gap = pd.read_csv(r'Data\sidewalk_gap_hilltop.csv')
+gap = pd.read_csv(r'Data\sidewalk_gap_hilltop_mock_dat.csv')
 
 nearest_dat = pd.read_pickle(r'Data\hilltop_nearest_rd_no_geom.pkl')
 nearest_dat = nearest_dat[['OBJECTID', 'nearest']]

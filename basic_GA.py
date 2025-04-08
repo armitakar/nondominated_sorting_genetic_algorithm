@@ -2,7 +2,6 @@
 """
 Created on Mon Mar 13 19:19:40 2023
 
-@author: armit
 """
 
 from random import random, randint, uniform
@@ -21,7 +20,8 @@ def norm(dist):
     dist_norm = [(a - dist_min) / (dist_max - dist_min) for a in dist]
     return dist_norm
 
-def obj(new_imp, old_imp, pop): #our objective is to maximize gain
+#our objective is to maximize gain
+def obj(new_imp, old_imp, pop): 
     gain = [new_imp[i] - old_imp[i] for i in range(len(new_imp))]
     n_rd = 0
     tot_gain = 0
@@ -38,60 +38,15 @@ def obj(new_imp, old_imp, pop): #our objective is to maximize gain
     return avg_gain
     #return tot_gain
 
-# =============================================================================
-# def fitness_score(ws, objs, conn, popsize): #assign based on weighted sum of gains scaled on a 0-1 scale
-#     scr = [0 for i in range(popsize)]
-#     for i in range(len(ws)):
-#         w_obj = [ws[i]*objs[i][j] for j in range(popsize)] 
-#         scr = [(scr[j] + w_obj[j]) for j in range(len(scr))]
-#     #scr_min = min(scr)
-#     #scr_max = max(scr)
-#     #scr_norm = [(a - scr_min) / (scr_max - scr_min) for a in scr]
-#     scr = [scr[i]* conn[i] for i in range(len(scr))]
-#     return scr
-# 
-# 
-# def sharing(distance, sigma, alpha):
-#     # takes a list of dist from pop i to all pop j
-#     # estimates sharing value
-#     res = []
-#     dist_norm = norm(distance)
-#     #print(dist_norm)
-#     res = [(1 - (i/sigma)**alpha) if i < sigma else 0 for i in dist_norm]
-#     return res
-# 
-# def shared_fitness(population, fitness, sigma, alpha):
-#     #estimates shared fitness for all individual
-#     shared_fitness = []
-#     for i in range(len(population)):
-#         dist = []
-#         sharing_dist = []
-#         for j in range(len(population)):
-#             #print(i, j)
-#             dist_ij = np.linalg.norm(np.array(population[i])-np.array(population[j]))
-#             dist.append(dist_ij)
-#             #print(dist)
-#         sharing_dist = sharing(dist, sigma, alpha)
-#         shared_fitness.append(fitness[i]/sum(sharing_dist))
-#     return(shared_fitness)
-# 
-# def select(fitnesses):
-#     total = sum(fitnesses)
-#     r = uniform(0, total)
-#     acc = 0
-#     for i in range(len(fitnesses)):
-#         acc += fitnesses[i]
-#         if acc >= r:
-#             return i
-# =============================================================================
-        
-        
+
+# calculate network length        
 def calculate_len(rd_len, sol):
     tot_len = 0
     for i in range(len(rd_len)):
         if sol[i] == 1:
             tot_len += rd_len[i]
     return tot_len
+
 
 def touranment_selection(num_parents,num_offspring):
     offspring_parents = []
@@ -103,20 +58,10 @@ def touranment_selection(num_parents,num_offspring):
     return offspring_parents
 
 def selTournamentDCD(individuals, fitnesses, crowding, k):
-    """Tournament selection based on dominance (D) between two individuals, if
-    the two individuals do not interdominate the selection is made
-    based on crowding distance (CD). The *individuals* sequence length has to
-    be a multiple of 4 only if k is equal to the length of individuals. 
-    Starting from the beginning of the selected individuals, two consecutive 
-    individuals will be different (assuming all individuals in the input list 
-    are unique). Each individual from the input list won't be selected more 
-    than twice.
-    This selection requires the individuals to have a :attr:`crowding_dist`
-    attribute, which can be set by the :func:`assignCrowdingDist` function.
-    :param individuals: A list of individuals to select from.
-    :param k: The number of individuals to select. Must be less than or equal 
-              to len(individuals).
-    :returns: A list of selected individuals.
+    """Tournament selection based on non-domination ranks, crowded distance, and continuity ratio.
+    Note that the crowding parameter should provide a crowd-coninuous index -crowding distance value multipled by continuity ratio. 
+    
+    
     """
 
     if k > len(individuals): 
